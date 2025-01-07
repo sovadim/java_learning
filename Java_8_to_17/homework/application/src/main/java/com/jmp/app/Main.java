@@ -5,9 +5,7 @@ import com.jmp.cloud.bank.BankFactory;
 import com.jmp.cloud.bank.BankType;
 import com.jmp.cloud.service.impl.CloudService;
 import com.jmp.cloud.service.impl.SubscriptionNotFoundError;
-import com.jmp.dto.BankCard;
-import com.jmp.dto.BankCardType;
-import com.jmp.dto.User;
+import com.jmp.dto.*;
 import com.jmp.service.api.Service;
 
 import java.time.LocalDate;
@@ -55,16 +53,16 @@ public class Main {
     public static void issueCards() {
         // Only retail bank can issue credit or debit cards
         try {
-            centralBank.createBankCard(users.get(0), BankCardType.CREDIT);
+            centralBank.createBankCard(users.get(0), CreditBankCard::new);
         } catch (RuntimeException ignored) {
         }
         // Let's issue half credit cards and half debit cards
         users.stream()
                 .limit(users.size() / 2)
-                .forEach(user -> cards.add(retailBank.createBankCard(user, BankCardType.CREDIT)));
+                .forEach(user -> cards.add(retailBank.createBankCard(user, CreditBankCard::new)));
         users.stream()
                 .skip(users.size() / 2)
-                .forEach(user -> cards.add(retailBank.createBankCard(user, BankCardType.DEBIT)));
+                .forEach(user -> cards.add(retailBank.createBankCard(user, DebitBankCard::new)));
         System.out.println("Created bank cards: " + cards);
     }
 
