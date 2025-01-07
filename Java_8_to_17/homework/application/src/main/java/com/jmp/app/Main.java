@@ -27,6 +27,7 @@ public class Main {
         issueCards();
         makeSubscriptions();
         checkCreatedSubscriptions();
+        checkAverageUsersAge();
     }
 
     public static void createBanks() {
@@ -82,5 +83,9 @@ public class Main {
                 value -> System.out.println("Subscription is unexpectedly not found"),
                 () -> System.out.println("Subscription for card '42' is expectedly not found")
         );
+    }
+
+    public static void checkAverageUsersAge() {
+        System.out.println("Average service subscribers age: " + cloudService.getAverageUsersAge());
     }
 }
