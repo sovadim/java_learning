@@ -24,4 +24,9 @@ public class User {
     public LocalDate getBirthday() {
         return birthday;
     }
+
+    @Override
+    public String toString() {
+        return "User[" + name + " " + surname + "]";
+    }
 }
