@@ -23,4 +23,8 @@ public interface Service {
                 .average()
                 .orElse(0.0);
     }
+
+    static boolean isPayableUser(User user) {
+        return ChronoUnit.YEARS.between(user.getBirthday(), LocalDate.now()) >= 18;
+    }
 }

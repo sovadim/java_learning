@@ -28,6 +28,7 @@ public class Main {
         makeSubscriptions();
         checkCreatedSubscriptions();
         checkAverageUsersAge();
+        checkIsPayableUser();
     }
 
     public static void createBanks() {
@@ -42,7 +43,9 @@ public class Main {
                 new User("Jane", "Smith", LocalDate.of(1985, Month.JULY, 15)),
                 new User("Alice", "Johnson", LocalDate.of(1990, Month.DECEMBER, 5)),
                 new User("Bob", "Brown", LocalDate.of(1988, Month.MARCH, 22)),
-                new User("Charlie", "Davis", LocalDate.of(1995, Month.AUGUST, 10))
+                new User("Charlie", "Davis", LocalDate.of(1995, Month.AUGUST, 10)),
+                new User("Tom", "Young", LocalDate.of(2008, Month.JUNE, 12)),
+                new User("Lucy", "Green", LocalDate.of(2010, Month.NOVEMBER, 25))
         ));
         System.out.println("Created users: " + users);
     }
@@ -74,7 +77,9 @@ public class Main {
         // Check if subscription can be find by card number
         var existingSubscription = cloudService.getSubscriptionByBankCardNumber(cards.get(0).getNumber());
         existingSubscription.ifPresent(
-                value -> System.out.println("Subscription, card: " + value.getBankCardNumber() + ", started at: " + value.getStartDate())
+            value -> System.out.println(
+                "Subscription, card: " + value.getBankCardNumber() + ", started at: " + value.getStartDate()
+            )
         );
 
         // Check is non existing subscription is not found
@@ -87,5 +92,13 @@ public class Main {
 
     public static void checkAverageUsersAge() {
         System.out.println("Average service subscribers age: " + cloudService.getAverageUsersAge());
+    }
+
+    public static void checkIsPayableUser() {
+        users.forEach(
+            user -> System.out.println(
+                "User " + user + " is payable: " + Service.isPayableUser(user) + ", birthday: " + user.getBirthday()
+            )
+        );
     }
 }
