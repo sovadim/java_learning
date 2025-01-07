@@ -30,6 +30,7 @@ public class Main {
         checkCreatedSubscriptions();
         checkAverageUsersAge();
         checkIsPayableUser();
+        checkFindingSubscriptionsWIthPredicate();
     }
 
     public static void createBanks() {
@@ -108,6 +109,16 @@ public class Main {
         users.forEach(
             user -> System.out.println(
                 "User " + user + " is payable: " + Service.isPayableUser(user) + ", birthday: " + user.getBirthday()
+            )
+        );
+    }
+
+    public static void checkFindingSubscriptionsWIthPredicate() {
+        // Let's filter the subscriptions with those where the card number is more than 4
+        System.out.println("Filtered subscriptions: ");
+        cloudService.getAllSubscriptionsByCondition(s -> Integer.parseInt(s.getBankCardNumber()) > 4)
+            .forEach((s) -> System.out.println(
+                "Subscription, card: " + s.getBankCardNumber() + ", started at: " + s.getStartDate()
             )
         );
     }

@@ -7,6 +7,7 @@ import com.jmp.service.api.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class CloudService implements Service {
@@ -24,6 +25,13 @@ public class CloudService implements Service {
         return subscriptions.stream()
                 .filter(s -> s.getBankCardNumber().equals(cardNumber))
                 .findFirst();
+    }
+
+    @Override
+    public List<Subscription> getAllSubscriptionsByCondition(Predicate<Subscription> condition) {
+        return subscriptions.stream()
+                .filter(condition)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
