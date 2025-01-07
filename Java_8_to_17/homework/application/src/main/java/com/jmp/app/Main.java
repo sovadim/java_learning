@@ -4,6 +4,7 @@ import com.jmp.bankapi.Bank;
 import com.jmp.cloud.bank.BankFactory;
 import com.jmp.cloud.bank.BankType;
 import com.jmp.cloud.service.impl.CloudService;
+import com.jmp.cloud.service.impl.SubscriptionNotFoundError;
 import com.jmp.dto.BankCard;
 import com.jmp.dto.BankCardType;
 import com.jmp.dto.User;
@@ -82,12 +83,21 @@ public class Main {
             )
         );
 
-        // Check is non existing subscription is not found
-        var nonExistingSubscription = cloudService.getSubscriptionByBankCardNumber("42");
+        // Check is non-existing subscription is not found
+        String invalidCardNumber = "42";
+        var nonExistingSubscription = cloudService.getSubscriptionByBankCardNumber(invalidCardNumber);
         nonExistingSubscription.ifPresentOrElse(
                 value -> System.out.println("Subscription is unexpectedly not found"),
                 () -> System.out.println("Subscription for card '42' is expectedly not found")
         );
+
+        // Use special exception for non-existing subscription
+        try {
+            cloudService.getSubscriptionByBankCardNumber(invalidCardNumber)
+                    .orElseThrow(() -> new SubscriptionNotFoundError(invalidCardNumber));
+        } catch (Exception e) {
+            System.out.println("Exception for not founding a subscription: " + e.getMessage());
+        }
     }
 
     public static void checkAverageUsersAge() {
