@@ -7,6 +7,7 @@ import com.jmp.service.api.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CloudService implements Service {
     private final HashSet<User> users = new HashSet<>();
@@ -27,6 +28,6 @@ public class CloudService implements Service {
 
     @Override
     public List<User> getAllUsers() {
-        return users.stream().toList();
+        return users.stream().collect(Collectors.toUnmodifiableList());
     }
 }
