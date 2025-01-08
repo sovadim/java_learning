@@ -7,6 +7,7 @@ import com.jmp.cloud.service.impl.CloudService;
 import com.jmp.cloud.service.impl.SubscriptionNotFoundError;
 import com.jmp.dto.*;
 import com.jmp.service.api.Service;
+import com.jmp.yet.another.service.impl.YetAnotherService;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -19,6 +20,7 @@ public class Main {
     private static List<User> users = new ArrayList<>();
     private static List<BankCard> cards = new ArrayList<>();
     private static Service cloudService = new CloudService();
+    private static Service yetAnotherService = new YetAnotherService();
 
     public static void main(String[] args) {
         createBanks();
@@ -29,6 +31,7 @@ public class Main {
         checkAverageUsersAge();
         checkIsPayableUser();
         checkFindingSubscriptionsWIthPredicate();
+        checkYetAnotherService();
     }
 
     public static void createBanks() {
@@ -119,5 +122,17 @@ public class Main {
                 "Subscription, card: " + s.getBankCardNumber() + ", started at: " + s.getStartDate()
             )
         );
+    }
+
+    public static void checkYetAnotherService() {
+        // The service should be same as CloudService, just using module loading
+        // 1. Subscribe
+        cards.forEach(yetAnotherService::subscribe);
+        // 2. Check users
+        System.out.println("Subscribed users by YetAnotherService: " +
+                yetAnotherService.getAllUsers());
+        // 3. Check subscription by card number
+        System.out.println("Subscription by card number '1': " +
+                yetAnotherService.getSubscriptionByBankCardNumber("1").get().getStartDate());
     }
 }
