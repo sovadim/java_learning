@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'jacoco'
+    id 'checkstyle'
 }
 
 repositories {
@@ -17,6 +18,10 @@ java {
 
 jacoco {
     toolVersion = "0.8.12"
+}
+
+checkstyle {
+    toolVersion = "10.21.3"
 }
 
 dependencies {
