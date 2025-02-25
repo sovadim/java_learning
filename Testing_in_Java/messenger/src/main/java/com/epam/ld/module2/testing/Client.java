@@ -1,10 +1,15 @@
 package com.epam.ld.module2.testing;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * The type Client.
  */
 public class Client {
     private String addresses;
+
+    private final Map<String, String> templateValues = new HashMap<>();
 
     /**
      * Gets addresses.
@@ -31,7 +36,7 @@ public class Client {
      * @return value
      */
     public String getValue(final String key) {
-        return null;
+        return templateValues.get(key);
     }
 
     /**
@@ -42,5 +47,6 @@ public class Client {
      */
     public void addTemplateValue(final String key,
                                  final String value) {
+        templateValues.put(key, value);
     }
 }
