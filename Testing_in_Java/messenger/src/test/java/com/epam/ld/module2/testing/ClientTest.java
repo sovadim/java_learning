@@ -24,7 +24,6 @@ public class ClientTest {
 
     @Test
     @DisplayName("Client can set and give template value")
-    @Disabled
     public void clientCanAddTemplateValue() {
         client.addTemplateValue("key", "value");
         assertEquals("value", client.getValue("key"));
