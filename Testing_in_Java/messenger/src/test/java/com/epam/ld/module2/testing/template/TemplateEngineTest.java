@@ -53,7 +53,6 @@ public class TemplateEngineTest {
 
     @Test
     @DisplayName("Existing template value is substituted")
-    @Disabled
     public void existingTemplateValueIsSubstitutedTest() {
         addValue("name", "World");
         assertEquals(
@@ -64,11 +63,11 @@ public class TemplateEngineTest {
 
     @Test
     @DisplayName("Non-existing template value causes error")
-    @Disabled
     public void nonExistingTemplateValueCausesError() {
-        assertThrows(
+        var e = assertThrows(
                 RuntimeException.class,
                 () -> generateMessage("Hello, #{name}!")
         );
+        assertEquals("No value for key: name", e.getMessage());
     }
 }
