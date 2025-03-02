@@ -1,6 +1,7 @@
 package com.epam.ld.module2.testing.template;
 
 import com.epam.ld.module2.testing.Client;
+import com.epam.ld.module2.testing.exceptions.TemplateValueNotFoundError;
 
 /**
  * The type Template engine.
@@ -32,7 +33,7 @@ public class TemplateEngine {
                         // Append value and clean key buffer
                         final var value = client.getValue(keyBuffer.toString());
                         if (value == null) {
-                            throw new RuntimeException("No value for key: " + keyBuffer);
+                            throw new TemplateValueNotFoundError(keyBuffer.toString());
                         }
                         msgBuffer.append(value);
                         keyBuffer.setLength(0);
