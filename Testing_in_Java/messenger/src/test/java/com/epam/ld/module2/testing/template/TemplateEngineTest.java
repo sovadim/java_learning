@@ -1,6 +1,7 @@
 package com.epam.ld.module2.testing.template;
 
 import com.epam.ld.module2.testing.Client;
+import com.epam.ld.module2.testing.exceptions.TemplateValueNotFoundError;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -63,11 +64,11 @@ public class TemplateEngineTest {
 
     @Test
     @DisplayName("Non-existing template value causes error")
-    public void nonExistingTemplateValueCausesError() {
+    public void nonExistingTemplateValueCausesErrorTest() {
         var e = assertThrows(
-                RuntimeException.class,
+                TemplateValueNotFoundError.class,
                 () -> generateMessage("Hello, #{name}!")
         );
-        assertEquals("No value for key: name", e.getMessage());
+        assertEquals("Template value for key 'name' not found", e.getMessage());
     }
 }
