@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TemplateEngineTest {
@@ -59,6 +62,38 @@ public class TemplateEngineTest {
         assertEquals(
                 "Hello, World!",
                 generateMessage("Hello, #{name}!")
+        );
+    }
+
+    private static String getAllLatin1CharsWithoutCurlyBraces() {
+        // Curly braces are filtered, because they are special symbols for parsing
+        return IntStream.rangeClosed(0, 255)
+                .filter(i -> i != '{' && i != '}')
+                .mapToObj(i -> String.valueOf((char) i)) // Convert each int to a char, then to String
+                .collect(Collectors.joining()); // Join all characters into a single string
+    }
+
+    @Test
+    @DisplayName("Template key supports all Latin-1 characters")
+    public void templateKeySupportsAllLatin1CharactersTest() {
+        var latin1chars = getAllLatin1CharsWithoutCurlyBraces();
+
+        addValue(latin1chars, "value");
+        assertEquals(
+                "abc value def",
+                generateMessage("abc #{" + latin1chars + "} def")
+        );
+    }
+
+    @Test
+    @DisplayName("Template value supports all Latin-1 characters")
+    public void templateValueSupportsAllLatin1CharactersTest() {
+        var latin1chars = getAllLatin1CharsWithoutCurlyBraces();
+
+        addValue("key", latin1chars);
+        assertEquals(
+                "abc " + latin1chars + " def",
+                generateMessage("abc #{key} def")
         );
     }
 
