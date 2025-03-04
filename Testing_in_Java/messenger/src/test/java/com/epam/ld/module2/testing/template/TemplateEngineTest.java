@@ -2,10 +2,7 @@ package com.epam.ld.module2.testing.template;
 
 import com.epam.ld.module2.testing.Client;
 import com.epam.ld.module2.testing.exceptions.TemplateValueNotFoundError;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -65,6 +62,12 @@ public class TemplateEngineTest {
         );
     }
 
+    @Test
+    public void textCanBeOnlyAPlaceholderTest() {
+        addValue("key", "value");
+        assertEquals("value", generateMessage("#{key}"));
+    }
+
     private static String getAllLatin1CharsWithoutCurlyBraces() {
         // Curly braces are filtered, because they are special symbols for parsing
         return IntStream.rangeClosed(0, 255)
@@ -116,5 +119,69 @@ public class TemplateEngineTest {
                 () -> generateMessage("Hello, #{name}!")
         );
         assertEquals("Template value for key 'name' not found", e.getMessage());
+    }
+
+    @Test
+    @DisplayName("Missing # is incorrect template syntax")
+    public void missingHashIsIncorrectTemplateSyntaxTest() {
+        assertEquals("Hello, {name}.", generateMessage("Hello, {name}."));
+    }
+
+    @Test
+    @DisplayName("Missing { is incorrect template syntax")
+    public void missingOpeningBraceIsIncorrectTemplateSyntaxTest() {
+        assertEquals("Hello, #name}.", generateMessage("Hello, #name}."));
+    }
+
+    @Test
+    @DisplayName("Missing } is incorrect template syntax")
+    public void missingClosingBraceIsIncorrectTemplateSyntaxTest() {
+        assertEquals("Hello, #{name.", generateMessage("Hello, #{name."));
+    }
+
+    @Test
+    @DisplayName("Nested placeholder is incorrect template syntax")
+    public void nestedPlaceholderIsIncorrectTemplateSyntaxTest() {
+        addValue("34#{56", "-");
+        assertEquals(
+                "12-78}90",
+                generateMessage("12#{34#{56}78}90")
+        );
+    }
+
+    @Test
+    @DisplayName("Extra # does not break parsing")
+    public void extraHashSignDoesNotBreakParsingTest() {
+        addValue("key", "value");
+        assertEquals(
+                "###value",
+                generateMessage("####{key}")
+        );
+    }
+
+    @Test
+    @DisplayName("# in the end of template does not break parsing")
+    public void hashSighInTheEndOfTemplateDoesNotBreakParsingTest() {
+        assertEquals("###", generateMessage("###"));
+    }
+
+    @Test
+    @DisplayName("Placeholder opening #{ in the end of template does not break parsing")
+    public void placeholderOpeningInTheEndOfTemplateDoesNotBreakParsingTest() {
+        assertEquals("Hello, #{", generateMessage("Hello, #{"));
+    }
+
+    @Test
+    @DisplayName("Extra { is part of template")
+    public void extraOpeningBraceIsPartOfTemplateTest() {
+        addValue("{{{key", "value");
+        assertEquals("value", generateMessage("#{{{{key}"));
+    }
+
+    @Test
+    @DisplayName("Extra } is part of template")
+    public void extraClosingBraceIsPartOfTextTest() {
+        addValue("key", "value");
+        assertEquals("value}}}", generateMessage("#{key}}}}"));
     }
 }
