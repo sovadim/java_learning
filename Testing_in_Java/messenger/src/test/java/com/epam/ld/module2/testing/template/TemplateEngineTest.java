@@ -122,6 +122,17 @@ public class TemplateEngineTest {
     }
 
     @Test
+    @DisplayName("Template key is case sensitive")
+    public void templateKeyIsCaseSensitiveTest() {
+        addValue("key", "value");
+        var e = assertThrows(
+                TemplateValueNotFoundError.class,
+                () -> generateMessage("#{KEY}!")
+        );
+        assertEquals("Template value for key 'KEY' not found", e.getMessage());
+    }
+
+    @Test
     @DisplayName("Missing # is incorrect template syntax")
     public void missingHashIsIncorrectTemplateSyntaxTest() {
         assertEquals("Hello, {name}.", generateMessage("Hello, {name}."));
