@@ -98,6 +98,17 @@ public class TemplateEngineTest {
     }
 
     @Test
+    @DisplayName("Template key and value may be empty strings")
+    public void templateKeyAndValueMayBeEmptyStringsTest() {
+        addValue("key", "");
+        addValue("", "value");
+        assertEquals(
+                "value",
+                generateMessage("#{key}#{}")
+        );
+    }
+
+    @Test
     @DisplayName("Non-existing template value causes error")
     public void nonExistingTemplateValueCausesErrorTest() {
         var e = assertThrows(
