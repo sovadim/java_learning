@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'jacoco'
     id 'checkstyle'
+    id 'application'
 }
 
 repositories {
@@ -14,6 +15,10 @@ repositories {
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
+}
+
+application {
+    mainClass = "com.epam.ld.module2.testing.App"
 }
 
 jacoco {
