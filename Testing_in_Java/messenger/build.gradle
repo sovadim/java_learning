@@ -21,6 +21,10 @@ application {
     mainClass = "com.epam.ld.module2.testing.App"
 }
 
+run {
+    standardInput = System.in
+}
+
 jacoco {
     toolVersion = "0.8.12"
 }

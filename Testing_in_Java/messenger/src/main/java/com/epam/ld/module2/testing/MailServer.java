@@ -26,5 +26,6 @@ public class MailServer {
     public void send(final String addresses,
                      final String messageContent) {
         writer.write(messageContent);
+        writer.flush();
     }
 }
