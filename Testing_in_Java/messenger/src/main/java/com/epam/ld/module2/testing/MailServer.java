@@ -8,9 +8,10 @@ public class MailServer {
     /**
      * Send notification.
      *
-     * @param addresses  the addresses
+     * @param addresses      the addresses
      * @param messageContent the message content
      */
-    public void send(String addresses, String messageContent) {
+    public void send(final String addresses,
+                     final String messageContent) {
     }
 }
