@@ -8,10 +8,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import java.io.PrintWriter;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @Tag("UnitTests")
 public class MessengerTest {
@@ -22,7 +23,7 @@ public class MessengerTest {
 
     @BeforeEach
     public void setUp() {
-        server = new MailServer();
+        server = new MailServer(new PrintWriter(System.out, true));
         spyServer = spy(server);
         templateEngine = new TemplateEngine();
         messenger = new Messenger(spyServer, templateEngine);
