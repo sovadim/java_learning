@@ -1,7 +1,6 @@
 package com.epam.ld.module2.testing;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,5 +26,12 @@ public class ClientTest {
     public void clientCanAddTemplateValue() {
         client.addTemplateValue("key", "value");
         assertEquals("value", client.getValue("key"));
+    }
+
+    @Test
+    @DisplayName("Client can set and get addresses")
+    public void testGetAddresses() {
+        client.setAddresses("test");
+        assertEquals("test", client.getAddresses());
     }
 }
