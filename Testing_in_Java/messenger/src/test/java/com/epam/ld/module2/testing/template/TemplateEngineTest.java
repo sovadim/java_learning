@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("UnitTests")
 public class TemplateEngineTest {
     TemplateEngine templateEngine;
     Client client;
@@ -63,6 +64,7 @@ public class TemplateEngineTest {
     }
 
     @Test
+    @DisplayName("Text may consist on one placeholder")
     public void textCanBeOnlyAPlaceholderTest() {
         addValue("key", "value");
         assertEquals("value", generateMessage("#{key}"));
