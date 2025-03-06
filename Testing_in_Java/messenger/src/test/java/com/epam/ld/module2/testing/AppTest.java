@@ -28,7 +28,6 @@ public class AppTest {
 
     @Test
     @DisplayName("App can work in console mode")
-    @Disabled
     public void appCanWorkInConsoleMode() {
         mockUserInput(
                 "Hello, #{name} #{surname}!\n" +
@@ -40,19 +39,17 @@ public class AppTest {
 
     @Test
     @DisplayName("App in console mode will write error if key is missing")
-    @Disabled
     public void appInConsoleModeWillWriteErrorIfKeyIsMissing() {
         mockUserInput(
                 "Hello, #{name} #{surname}!\n" +
                 "name=John"
         );
         App.main(new String[]{});
-        assertEquals("Template value for key 'surname' not found", getStdOut());
+        assertEquals("Template value for key 'surname' not found\n", getStdOut());
     }
 
     @Test
     @DisplayName("App prints help if arguments number is incorrect")
-    @Disabled
     public void whenCalledWithIncorrectArgumentsNumberPrintsHelpTest() {
         App.main(new String[]{"arg1", "arg2"});
         assertTrue(getStdOut().startsWith("Usage:"));
