@@ -6,7 +6,7 @@ package com.epam.ld.module2.testing.template;
 public class Template {
     private final String template;
 
-    public Template(String template) {
+    public Template(final String template) {
         this.template = template;
     }
 
