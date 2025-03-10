@@ -4,10 +4,9 @@ import com.epam.ld.module2.testing.exceptions.TemplateValueNotFoundError;
 import com.epam.ld.module2.testing.template.Template;
 import com.epam.ld.module2.testing.template.TemplateEngine;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class App {
@@ -77,7 +76,44 @@ public class App {
     private static void runInFileMode(final String inputFile,
                                       final String keyValuesFile,
                                       final String outputFile) {
-        throw new RuntimeException("File mode, not implemented yet.");
+        if (!Files.exists(Paths.get(inputFile))) {
+            System.out.println("File not found: " + inputFile);
+            return;
+        }
+        String template;
+        try {
+            template = Files.readString(Paths.get(inputFile));
+        } catch (IOException e) {
+            System.out.println("Error while reading input file: " + e.getMessage());
+            return;
+        }
+
+        if (!Files.exists(Paths.get(keyValuesFile))) {
+            System.out.println("File not found: " + keyValuesFile);
+            return;
+        }
+        String keyValues;
+        try {
+            keyValues = Files.readString(Paths.get(keyValuesFile));
+        } catch (IOException e) {
+            System.out.println("Error while reading key-values file: " + e.getMessage());
+            return;
+        }
+
+        initFileMessenger(outputFile);
+        run(template, keyValues);
+    }
+
+    private static void initFileMessenger(final String outputFile) {
+        try {
+            var writer = new PrintWriter(new FileWriter(outputFile, true), true);
+            messenger = new Messenger(
+                    new MailServer(writer),
+                    new TemplateEngine()
+            );
+        } catch (IOException e) {
+            System.out.println("Error while creating output file: " + e.getMessage());
+        }
     }
 
     private static void run(final String template,
