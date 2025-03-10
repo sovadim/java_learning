@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.ByteArrayOutputStream;
@@ -89,6 +91,20 @@ public class AppFileModeTest {
                 """,
                 resultContent()
         );
+    }
+
+    @Test
+    @EnabledOnOs(OS.MAC)
+    void testRunOnlyOnMacTest() {
+        // Just a stub conditional test
+        assertTrue(true);
+    }
+
+    @Test
+    @EnabledOnOs(OS.WINDOWS)
+    void testRunOnlyOnWindowsTest() {
+        // Just a stub conditional test
+        assertTrue(true);
     }
 }
 
