@@ -1,0 +1,18 @@
+Subject: #{subject}
+
+Dear #{firstName} #{lastName},
+
+Welcome to #{companyName}! Thank you for choosing our #{productName}.
+
+Your account has been successfully created with the username: #{username}. You now have access to all our premium features including #{feature1}, #{feature2}, and #{feature3}.
+
+Should you have any questions, please contact our support team at #{supportEmail} or call us at #{supportPhone}.
+
+Your subscription will be active until #{expirationDate}.
+
+We're excited to have you on board!
+
+Best regards,
+#{representativeName}
+Customer Success Team
+#{companyName}
