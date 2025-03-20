@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'idea'
+    id 'application'
 }
 
 repositories {
@@ -10,6 +11,14 @@ repositories {
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
+}
+
+application {
+    mainClass = "com.epam.files.App"
+}
+
+run {
+    standardInput = System.in
 }
 
 dependencies {
