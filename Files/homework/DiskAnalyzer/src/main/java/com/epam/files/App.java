@@ -1,6 +1,12 @@
 package com.epam.files;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class App {
+    private static FileFinder finder;
+
     private final static String helpString =
             """
             Usage:
@@ -22,9 +28,17 @@ public class App {
             showHelp();
             return;
         }
+
+        Path path = Paths.get(args[0]);
+        if (!Files.exists(path)) {
+            System.out.printf("The path " + args[0] + " doesn't exist.");
+            return;
+        }
+
+        finder = new FileFinder();
         switch (args[1]) {
             case "1":
-                task1();
+                task1(path);
                 break;
             case "2":
                 task2();
@@ -44,8 +58,8 @@ public class App {
         System.out.println(helpString);
     }
 
-    private static void task1() {
-        System.out.println("TODO: Task 1");
+    private static void task1(Path path) {
+        finder.findFileWithMaxS(path);
     }
 
     private static void task2() {

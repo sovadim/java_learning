@@ -4,15 +4,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.nio.file.Path;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("AppTests")
 public class AppTest {
     static ByteArrayOutputStream output;
+
+    @TempDir
+    Path tmpDir;
+
+    private String tmpDir() {
+        return tmpDir.resolve("").toString();
+    }
 
     @BeforeEach
     public void setUp() {
@@ -36,30 +46,37 @@ public class AppTest {
     }
 
     @Test
+    @DisplayName("App shows error if path does not exist")
+    public void appShowsErrorIfPathDoesNotExist() {
+        app("abcd", "1");
+        assertEquals("The path abcd doesn't exist.", getStdOut());
+    }
+
+    @Test
     @DisplayName("App can run task 1")
     public void task1IsRunnable() {
-        app("", "1");
-        assertTrue(getStdOut().contains("TODO: Task 1"));
+        app(tmpDir(), "1");
+        assertEquals("TODO: Task 1\n", getStdOut());
     }
 
     @Test
     @DisplayName("App can run task 2")
     public void task2IsRunnable() {
-        app("", "2");
-        assertTrue(getStdOut().contains("TODO: Task 2"));
+        app(tmpDir(), "2");
+        assertEquals("TODO: Task 2\n", getStdOut());
     }
 
     @Test
     @DisplayName("App can run task 3")
     public void task3IsRunnable() {
-        app("", "3");
-        assertTrue(getStdOut().contains("TODO: Task 3"));
+        app(tmpDir(), "3");
+        assertEquals("TODO: Task 3\n", getStdOut());
     }
 
     @Test
     @DisplayName("App can run task 4")
     public void task4IsRunnable() {
-        app("", "4");
-        assertTrue(getStdOut().contains("TODO: Task 4"));
+        app(tmpDir(), "4");
+        assertEquals("TODO: Task 4\n", getStdOut());
     }
 }
