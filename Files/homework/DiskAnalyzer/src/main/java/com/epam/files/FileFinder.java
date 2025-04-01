@@ -1,5 +1,6 @@
 package com.epam.files;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileFinder {
+    private FileFinder() {};
+
     public static Optional<Path> findFileWithMaxS(Path path) {
         // Path can either a file or a directory
         if (!Files.isDirectory(path)) {
@@ -67,6 +70,36 @@ public class FileFinder {
                     .collect(Collectors.toList());
         } catch (Exception e) {
             return List.of();
+        }
+    }
+
+    public static double averageFileSize(Path path) {
+        // If path is file, return its size
+        if (!Files.isDirectory(path)) {
+            try {
+                return Files.size(path);
+            } catch (Exception e) {
+                return 0;
+            }
+        }
+        // Traverse to count average size
+        try (Stream<Path> stream = Files.walk(path)) {
+            return stream
+                    // Count only files
+                    .filter(p -> !Files.isDirectory(p))
+                    // Take file sizes
+                    .mapToLong(p -> {
+                        try {
+                            return Files.size(p);
+                        } catch (IOException e) {
+                            return 0;
+                        }
+                    })
+                    .average()
+                    // Default value is 0
+                    .orElse(0);
+        } catch (Exception e) {
+            return 0;
         }
     }
 }
