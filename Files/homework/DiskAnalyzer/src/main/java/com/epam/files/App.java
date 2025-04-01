@@ -3,6 +3,8 @@ package com.epam.files;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Optional;
 
 public class App {
     private static FileFinder finder;
@@ -41,7 +43,7 @@ public class App {
                 task1(path);
                 break;
             case "2":
-                task2();
+                task2(path);
                 break;
             case "3":
                 task3();
@@ -59,7 +61,7 @@ public class App {
     }
 
     private static void task1(Path path) {
-        var res = finder.findFileWithMaxS(path);
+        Optional<Path> res = finder.findFileWithMaxS(path);
         if (res.isPresent()) {
             System.out.println(res.get().getFileName().toString());
         } else {
@@ -67,8 +69,11 @@ public class App {
         }
     }
 
-    private static void task2() {
-        System.out.println("TODO: Task 2");
+    private static void task2(Path path) {
+        List<Path> res = finder.findTop5LargestFiles(path);
+        for (Path p : res) {
+            System.out.println(p.getFileName().toString());
+        }
     }
 
     private static void task3() {

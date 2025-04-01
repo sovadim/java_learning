@@ -63,10 +63,12 @@ public class AppTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("App can run task 2")
-    public void task2IsRunnable() {
+    @DisplayName("Task 2 finds top 5 largest files")
+    public void task2FindsTop5LargestFiles() throws Exception {
+        addFileWithLoad("a", 1);
+        addFileWithLoad("b", 2);
         app(tmpDir(), "2");
-        assertEquals("TODO: Task 2\n", getStdOut());
+        assertEquals("b\na\n", getStdOut());
     }
 
     @Test
