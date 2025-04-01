@@ -59,7 +59,12 @@ public class App {
     }
 
     private static void task1(Path path) {
-        finder.findFileWithMaxS(path);
+        var res = finder.findFileWithMaxS(path);
+        if (res.isPresent()) {
+            System.out.println(res.get().getFileName().toString());
+        } else {
+            System.out.println("No file with letter 's' found.");
+        }
     }
 
     private static void task2() {
