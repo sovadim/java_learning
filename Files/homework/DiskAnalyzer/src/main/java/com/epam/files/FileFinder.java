@@ -2,11 +2,13 @@ package com.epam.files;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileFinder {
-    public Optional<Path> findFileWithMaxS(Path path) {
+    public static Optional<Path> findFileWithMaxS(Path path) {
         // Path can either a file or a directory
         if (!Files.isDirectory(path)) {
             return countLetterS(path) > 0 ? Optional.of(path) : Optional.empty();
@@ -31,13 +33,40 @@ public class FileFinder {
         }
     }
 
-    private long countLetterS(Path file) {
+    private static long countLetterS(Path file) {
         return countLetterS(file.getFileName().toString());
     }
 
-    private long countLetterS(String filename) {
+    private static long countLetterS(String filename) {
         return filename.toLowerCase().chars()
                 .filter(c -> c == 's')
                 .count();
+    }
+
+    public static List<Path> findTop5LargestFiles(Path path) {
+        // If path is file, return just it
+        if (!Files.isDirectory(path)) {
+            return List.of(path);
+        }
+        // Traverse to find top 5 largest files
+        try (Stream<Path> stream = Files.walk(path)) {
+            return stream
+                    // Exclude count directories
+                    .filter(p -> !Files.isDirectory(p))
+                    // Sort by size
+                    .sorted((p1, p2) -> {
+                        try {
+                            return Long.compare(Files.size(p2), Files.size(p1));
+                        } catch (Exception e) {
+                            return 0;
+                        }
+                    })
+                    // Need only 5
+                    .limit(5)
+                    // Put result into list
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            return List.of();
+        }
     }
 }

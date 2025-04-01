@@ -22,4 +22,12 @@ public class BaseTest {
             Files.createDirectories(tmpDir.resolve(n));
         }
     }
+
+    public void addFileWithLoad(String name, int size) throws IOException {
+        Files.createDirectories(tmpDir.resolve(name).getParent());
+        var path = Files.createFile(tmpDir.resolve(name));
+        try (var out = Files.newOutputStream(path)) {
+            out.write("a".repeat(size).getBytes());
+        }
+    }
 }
