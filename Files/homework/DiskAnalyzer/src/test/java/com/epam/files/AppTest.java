@@ -4,21 +4,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("AppTests")
-public class AppTest {
+public class AppTest extends BaseTest {
     static ByteArrayOutputStream output;
-
-    @TempDir
-    Path tmpDir;
 
     private String tmpDir() {
         return tmpDir.resolve("").toString();
@@ -53,10 +48,18 @@ public class AppTest {
     }
 
     @Test
-    @DisplayName("App can run task 1")
-    public void task1IsRunnable() {
+    @DisplayName("Task 1 finds file with max 's'")
+    public void task1FindsFileWithMaxS() throws Exception {
+        addFiles("s1", "b2", "c3");
         app(tmpDir(), "1");
-        assertEquals("TODO: Task 1\n", getStdOut());
+        assertEquals("s1\n", getStdOut());
+    }
+
+    @Test
+    @DisplayName("Task 1 messages if no file found")
+    public void task1MessagesIfNoFileFound() {
+        app(tmpDir(), "1");
+        assertEquals("No file with letter 's' found.\n", getStdOut());
     }
 
     @Test
