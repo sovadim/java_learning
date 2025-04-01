@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'application'
+    id 'jacoco'
 }
 
 repositories {
@@ -17,13 +18,12 @@ application {
     mainClass = "com.epam.files.App"
 }
 
-run {
-    standardInput = System.in
+jacoco {
+    toolVersion = "0.8.12"
 }
 
-dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+run {
+    standardInput = System.in
 }
 
 dependencies {
@@ -34,4 +34,24 @@ dependencies {
 
 test {
     useJUnitPlatform()
+
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = false
+        csv.required = false
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+    }
 }
