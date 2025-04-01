@@ -72,10 +72,12 @@ public class AppTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("App can run task 3")
-    public void task3IsRunnable() {
+    @DisplayName("Task 3 counts average size of files")
+    public void task3CountsAverageSizeOfFiles() throws Exception {
+        addFileWithLoad("a", 1);
+        addFileWithLoad("b", 2);
         app(tmpDir(), "3");
-        assertEquals("TODO: Task 3\n", getStdOut());
+        assertEquals("Average file size: 1.5 bytes.\n", getStdOut());
     }
 
     @Test

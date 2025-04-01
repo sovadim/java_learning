@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class App {
-    private static FileFinder finder;
-
     private final static String helpString =
             """
             Usage:
@@ -37,7 +35,6 @@ public class App {
             return;
         }
 
-        finder = new FileFinder();
         switch (args[1]) {
             case "1":
                 task1(path);
@@ -46,7 +43,7 @@ public class App {
                 task2(path);
                 break;
             case "3":
-                task3();
+                task3(path);
                 break;
             case "4":
                 task4();
@@ -61,7 +58,7 @@ public class App {
     }
 
     private static void task1(Path path) {
-        Optional<Path> res = finder.findFileWithMaxS(path);
+        Optional<Path> res = FileFinder.findFileWithMaxS(path);
         if (res.isPresent()) {
             System.out.println(res.get().getFileName().toString());
         } else {
@@ -70,14 +67,14 @@ public class App {
     }
 
     private static void task2(Path path) {
-        List<Path> res = finder.findTop5LargestFiles(path);
+        List<Path> res = FileFinder.findTop5LargestFiles(path);
         for (Path p : res) {
             System.out.println(p.getFileName().toString());
         }
     }
 
-    private static void task3() {
-        System.out.println("TODO: Task 3");
+    private static void task3(Path path) {
+        System.out.println("Average file size: " + FileFinder.averageFileSize(path) + " bytes.");
     }
 
     private static void task4() {
