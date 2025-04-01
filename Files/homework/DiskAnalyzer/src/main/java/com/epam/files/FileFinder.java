@@ -12,14 +12,10 @@ public class FileFinder {
     private FileFinder() {};
 
     public static Optional<Path> findFileWithMaxS(Path path) {
-        // Path can either a file or a directory
-        if (!Files.isDirectory(path)) {
-            return countLetterS(path) > 0 ? Optional.of(path) : Optional.empty();
-        }
-        // Traverse paths and find one with max number of 's'
         long maxCount = 0;
         Path maxFile = null;
 
+        // Traverse paths and find one with max number of 's'
         try (Stream<Path> stream = Files.walk(path)) {
             for (Path file : stream.toList()) {
                 if (!Files.isDirectory(file)) {
@@ -47,10 +43,6 @@ public class FileFinder {
     }
 
     public static List<Path> findTop5LargestFiles(Path path) {
-        // If path is file, return just it
-        if (!Files.isDirectory(path)) {
-            return List.of(path);
-        }
         // Traverse to find top 5 largest files
         try (Stream<Path> stream = Files.walk(path)) {
             return stream
@@ -74,14 +66,6 @@ public class FileFinder {
     }
 
     public static double averageFileSize(Path path) {
-        // If path is file, return its size
-        if (!Files.isDirectory(path)) {
-            try {
-                return Files.size(path);
-            } catch (Exception e) {
-                return 0;
-            }
-        }
         // Traverse to count average size
         try (Stream<Path> stream = Files.walk(path)) {
             return stream
@@ -100,6 +84,27 @@ public class FileFinder {
                     .orElse(0);
         } catch (Exception e) {
             return 0;
+        }
+    }
+
+    public static Pair<Integer, Integer> countFilesAndDirsStartingWithA(Path path) {
+        int filesCount = 0;
+        int dirsCount = 0;
+
+        try (var stream = Files.walk(path)) {
+            for (Path p : stream.toList()) {
+                if (p.getFileName().toString().startsWith("A")
+                    || p.getFileName().toString().startsWith("a")) {
+                    if (Files.isDirectory(p)) {
+                        dirsCount++;
+                    } else {
+                        filesCount++;
+                    }
+                }
+            }
+            return new Pair<>(filesCount, dirsCount);
+        } catch (Exception e) {
+            return new Pair<>(0, 0);
         }
     }
 }

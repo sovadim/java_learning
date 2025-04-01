@@ -46,7 +46,7 @@ public class App {
                 task3(path);
                 break;
             case "4":
-                task4();
+                task4(path);
                 break;
             default:
                 showHelp();
@@ -77,7 +77,8 @@ public class App {
         System.out.println("Average file size: " + FileFinder.averageFileSize(path) + " bytes.");
     }
 
-    private static void task4() {
-        System.out.println("TODO: Task 4");
+    private static void task4(Path path) {
+        Pair<Integer, Integer> res = FileFinder.countFilesAndDirsStartingWithA(path);
+        System.out.println(res.value1() + " files and " + res.value2() + " folders begin with the letter A");
     }
 }

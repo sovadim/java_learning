@@ -81,9 +81,14 @@ public class AppTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("App can run task 4")
-    public void task4IsRunnable() {
+    @DisplayName("Task 4 counts files and folders starting with A")
+    public void task4CountsFilesAndFoldersStartingWithA() throws Exception {
+        addFiles(
+                "aa/bb/abc/add",
+                "a.txt",
+                "A.exe"
+        );
         app(tmpDir(), "4");
-        assertEquals("TODO: Task 4\n", getStdOut());
+        assertEquals("3 files and 2 folders begin with the letter A\n", getStdOut());
     }
 }
