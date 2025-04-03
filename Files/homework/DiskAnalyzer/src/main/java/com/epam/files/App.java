@@ -1,5 +1,8 @@
 package com.epam.files;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -7,10 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class App {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     private final static String helpString =
             """
             Usage:
-            $ gradle run --args="<path> <task code>"
+            $ gradle run --args="<path> <task code> <output file [optional]>"
 
             Arguments:
             <path> - a path to the input directory
@@ -19,6 +24,7 @@ public class App {
                 2: Print Top-5 largest files by size in bytes;
                 3: The average file size in the specified directory or any its subdirectory;
                 4: The number of files and folders, divided by the first letters of the alphabet (for example, 100,000 files and 200 folders begin with the letter A).
+            <output file> - a path to the output file, by default is out.txt
             """;
 
     public static void main(String[] args) {
@@ -31,7 +37,7 @@ public class App {
 
         Path path = Paths.get(args[0]);
         if (!Files.exists(path)) {
-            System.out.printf("The path " + args[0] + " doesn't exist.");
+            LOGGER.error("The path " + args[0] + " doesn't exist.");
             return;
         }
 
