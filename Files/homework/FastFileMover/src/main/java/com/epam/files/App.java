@@ -1,5 +1,10 @@
 package com.epam.files;
 
+import com.epam.files.algorithms.ChannelFileMoveStrategy;
+import com.epam.files.algorithms.FileMoveStrategy;
+import com.epam.files.algorithms.NIOFileMoveStrategy;
+import com.epam.files.algorithms.StreamFileMoveStrategy;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,7 +55,16 @@ public class App {
         run(filePath, newPath, algorithmCode);
     }
 
-    private static void run(Path file, Path dir, int algorithmCode) {
-        // TODO
+    private static void run(Path src, Path dst, int algorithmCode) {
+        final FileMoveStrategy strategy;
+        switch (algorithmCode) {
+            case 1 -> strategy = new StreamFileMoveStrategy();
+            case 2 -> strategy = new StreamFileMoveStrategy(102400); // 100 Kb
+            case 3 -> strategy = new ChannelFileMoveStrategy();
+            case 4 -> strategy = new NIOFileMoveStrategy();
+            default -> throw new RuntimeException(); // unreachable
+        }
+        var fileMover = new FileMover(strategy);
+        fileMover.move(src, dst);
     }
 }

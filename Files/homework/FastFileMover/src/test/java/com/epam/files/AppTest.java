@@ -3,9 +3,12 @@ package com.epam.files;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,5 +72,19 @@ public class AppTest extends BaseTest {
 
         app(oldPath.toString(), newPath.toString(), "42");
         assertStdOutEquals("Algorithm code must be 1, 2, 3 or 4\n");
+    }
+
+    @ParameterizedTest(name = "Algorithm {0} moves file")
+    @ValueSource(strings = {"1", "2", "3", "4"})
+    @DisplayName("All algorithms can move file")
+    public void allAlgorithmsCanMoveFile(String algorithmCode) throws Exception {
+        addFiles("old");
+        oldPath = tmpDir.resolve("old");
+        newPath = tmpDir.resolve("new");
+
+        app(oldPath.toString(), newPath.toString(), algorithmCode);
+
+        assertTrue(Files.exists(newPath));
+        assertTrue(Files.notExists(oldPath));
     }
 }
