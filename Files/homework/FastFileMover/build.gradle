@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'jacoco'
 }
 
 repositories {
@@ -11,6 +13,18 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+application {
+    mainClass = "com.epam.files.App"
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+run {
+    standardInput = System.in
+}
+
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.12.1")
@@ -19,4 +33,14 @@ dependencies {
 
 test {
     useJUnitPlatform()
+
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = false
+        csv.required = false
+    }
 }
