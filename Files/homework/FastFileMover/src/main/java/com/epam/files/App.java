@@ -12,7 +12,7 @@ public class App {
             
             Arguments:
             - <file path> - path to the file to be moved
-            - <new directory path> - path to the new directory
+            - <new directory path> - new path to file
             - <algorithm code> - algorithm code (1, 2, 3 or 4)
                 - 1: Using FileStreams
                 - 2: Using FileStreams with buffer 100 kb
@@ -22,7 +22,7 @@ public class App {
 
     public static void main(String[] args) {
         // Arg 1: path to file
-        // Arg 2: path to new directory
+        // Arg 2: new path to file
         // Arg 3: algorithm code
         if (args.length != 3) {
             System.out.println(helpString);
@@ -35,12 +35,9 @@ public class App {
             return;
         }
 
-        Path newDirPath = Paths.get(args[1]);
-        if (!Files.exists(newDirPath)) {
-            System.out.println("Directory '" + newDirPath + "' does not exist");
-            return;
-        } else if (!Files.isDirectory(newDirPath)) {
-            System.out.println("Path '" + newDirPath + "' is not a directory");
+        Path newPath = Paths.get(args[1]);
+        if (Files.exists(newPath)) {
+            System.out.println("File '" + newPath + "' already exist");
             return;
         }
 
@@ -50,7 +47,7 @@ public class App {
             return;
         }
 
-        run(filePath, newDirPath, algorithmCode);
+        run(filePath, newPath, algorithmCode);
     }
 
     private static void run(Path file, Path dir, int algorithmCode) {

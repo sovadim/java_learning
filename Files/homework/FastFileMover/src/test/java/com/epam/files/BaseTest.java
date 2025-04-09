@@ -16,10 +16,4 @@ public class BaseTest {
             Files.createFile(tmpDir.resolve(n));
         }
     }
-
-    public void addDirs(String... name) throws IOException {
-        for (String n : name) {
-            Files.createDirectories(tmpDir.resolve(n));
-        }
-    }
 }

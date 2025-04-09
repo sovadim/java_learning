@@ -5,7 +5,7 @@ Moves a file from one directory to another directory.
 **Running**
 
 ```bash
-$ gradle run --args="<file path> <new directory path> <algorithm code>"
+$ gradle run --args="<file path> <new file path> <algorithm code>"
 ```
 
 Move algorithms:

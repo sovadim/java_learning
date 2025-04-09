@@ -14,12 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AppTest extends BaseTest {
     static ByteArrayOutputStream output;
 
-    public Path inputFile;
-    public Path newDir;
-
-    private String tmpDir() {
-        return tmpDir.resolve("").toString();
-    }
+    public Path oldPath;
+    public Path newPath;
 
     private void assertStdOutEquals(String expected) {
         assertEquals(expected, getStdOut());
@@ -54,35 +50,24 @@ public class AppTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("App shows error if directory does not exist")
-    public void appShowsErrorIfDirDoesNotExist() throws Exception {
-        addFiles("file");
-        inputFile = tmpDir.resolve("file");
+    @DisplayName("App shows error if new file path already exists")
+    public void appShowsErrorIfNewFilePathAlreadyExists() throws Exception {
+        addFiles("file1", "file2");
+        oldPath = tmpDir.resolve("file1");
+        newPath = tmpDir.resolve("file2");
 
-        app(inputFile.toString(), "def", "42");
-        assertStdOutEquals("Directory 'def' does not exist\n");
-    }
-
-    @Test
-    @DisplayName("App shows error if directory is not a directory")
-    public void appShowsErrorIfDirIsNotDir() throws Exception {
-        addFiles("file", "dir");
-        inputFile = tmpDir.resolve("file");
-        newDir = tmpDir.resolve("dir");
-
-        app(inputFile.toString(), newDir.toString(), "42");
-        assertStdOutEquals("Path '" + newDir + "' is not a directory\n");
+        app(oldPath.toString(), newPath.toString(), "42");
+        assertStdOutEquals("File '" + newPath + "' already exist\n");
     }
 
     @Test
     @DisplayName("App shows error if algorithm code is incorrect")
     public void appShowsErrorIfAlgorithmCodeIsNotCorrect() throws Exception {
-        addFiles("file");
-        addDirs("dir");
-        inputFile = tmpDir.resolve("file");
-        newDir = tmpDir.resolve("dir");
+        addFiles("file1");
+        oldPath = tmpDir.resolve("file1");
+        newPath = tmpDir.resolve("file2");
 
-        app(inputFile.toString(), newDir.toString(), "42");
+        app(oldPath.toString(), newPath.toString(), "42");
         assertStdOutEquals("Algorithm code must be 1, 2, 3 or 4\n");
     }
 }
