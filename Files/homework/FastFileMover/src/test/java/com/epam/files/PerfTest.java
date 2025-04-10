@@ -39,15 +39,15 @@ public class PerfTest {
     }
 
     long runBenchmark() {
-        long cumulativeCompileTimeNs = 0;
+        long cumulativeTimeNs = 0;
         for (int i = 0; i < 1000; ++i) {
             final long startTime = System.nanoTime();
             fileMover.move(oldPath, newPath);
-            cumulativeCompileTimeNs += System.nanoTime() - startTime;
+            cumulativeTimeNs += System.nanoTime() - startTime;
             swapSrcDst();
         }
         // /--> 1 run /--> ms.
-        return cumulativeCompileTimeNs / 1000 / 1000;
+        return cumulativeTimeNs / 1000 / 1000;
     }
 
     static Stream<Long> fileSizes() {
