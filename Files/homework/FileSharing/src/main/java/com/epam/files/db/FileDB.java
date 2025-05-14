@@ -1,27 +1,37 @@
 package com.epam.files.db;
 
+import com.epam.files.db.errors.FileDBCannotOpenConnection;
 import com.epam.files.db.errors.FileDBError;
 import com.epam.files.db.impl.FileRecord;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Optional;
 
 public class FileDB implements AutoCloseable {
     private final Connection connection;
 
-    public FileDB(String address,
-                  String name,
-                  String user,
-                  String password) throws FileDBError {
-        // TODO: create connection
+    public FileDB(final String address,
+                  final String name,
+                  final String user,
+                  final String password) throws FileDBError {
+        try {
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://%s/%s".formatted(address, name), user, password
+            );
+        } catch (SQLException e) {
+            throw new FileDBCannotOpenConnection(e.getMessage());
+        }
     }
 
-    public void add(String filename, String pathFrom) throws FileDBError {
+    public void add(final String filename,
+                    final String pathFrom) throws FileDBError {
         // TODO: save file
     }
 
-    public Optional<FileRecord> get(String name, String pathTo) throws FileDBError {
+    public Optional<FileRecord> get(final String name,
+                                    final String pathTo) throws FileDBError {
         // TODO: retrieve file
         return Optional.empty();
     }
