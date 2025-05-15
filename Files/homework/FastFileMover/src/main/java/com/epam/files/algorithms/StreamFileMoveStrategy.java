@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class StreamFileMoveStrategy implements FileMoveStrategy {
-    final int bufferSize;
+    private final int bufferSize;
 
     public StreamFileMoveStrategy() {
         this(256);
