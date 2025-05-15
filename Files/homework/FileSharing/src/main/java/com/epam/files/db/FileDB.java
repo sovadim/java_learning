@@ -1,47 +1,59 @@
 package com.epam.files.db;
 
-import com.epam.files.db.errors.FileDBCannotOpenConnection;
-import com.epam.files.db.errors.FileDBError;
+import com.epam.files.db.errors.*;
 import com.epam.files.db.impl.FileRecord;
+import com.epam.files.db.impl.JDBCFileDAO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 public class FileDB implements AutoCloseable {
-    private final Connection connection;
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private final JDBCFileDAO dao;
 
     public FileDB(final String address,
                   final String name,
                   final String user,
                   final String password) throws FileDBError {
-        try {
-            connection = DriverManager.getConnection(
-                    "jdbc:postgresql://%s/%s".formatted(address, name), user, password
-            );
-        } catch (SQLException e) {
-            throw new FileDBCannotOpenConnection(e.getMessage());
-        }
+        dao = new JDBCFileDAO(address, name, user, password);
     }
 
     public void add(final String filename,
                     final String pathFrom) throws FileDBError {
-        // TODO: save file
+        try (InputStream stream = Files.newInputStream(Path.of(pathFrom))) {
+            dao.saveFile(filename, stream);
+        } catch (Exception e) {
+            LOGGER.error("Error while saving file: " + e.getMessage());
+            throw new FileDBAddError(e.getMessage());
+        }
     }
 
-    public Optional<FileRecord> get(final String name,
-                                    final String pathTo) throws FileDBError {
-        // TODO: retrieve file
-        return Optional.empty();
+    public void get(final String name,
+                    final String pathTo) throws FileDBError {
+        try {
+            Optional<FileRecord> record = dao.retrieveFile(name);
+            if (record.isEmpty()) {
+                throw new FileDBNotFoundError(name);
+            }
+            Files.copy(
+                    record.get().content(),
+                    Path.of(pathTo),
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+        } catch (Exception e) {
+            LOGGER.error("Error while retrieving file: " + e.getMessage());
+            throw new FileDBRetrieveError(e.getMessage());
+        }
     }
 
     @Override
     public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.out.println("DB connection closing thrown error: " + e.getMessage());
-        }
+        dao.close();
     }
 }
