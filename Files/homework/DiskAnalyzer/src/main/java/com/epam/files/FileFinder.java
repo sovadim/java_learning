@@ -59,7 +59,7 @@ public class FileFinder {
                     // Need only 5
                     .limit(5)
                     // Put result into list
-                    .collect(Collectors.toList());
+                    .toList();
         } catch (Exception e) {
             return List.of();
         }

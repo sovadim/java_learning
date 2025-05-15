@@ -53,20 +53,11 @@ public class App {
             }
 
             switch (args[1]) {
-                case "1":
-                    task1(path);
-                    break;
-                case "2":
-                    task2(path);
-                    break;
-                case "3":
-                    task3(path);
-                    break;
-                case "4":
-                    task4(path);
-                    break;
-                default:
-                    showHelp();
+                case "1" -> task1(path);
+                case "2" -> task2(path);
+                case "3" -> task3(path);
+                case "4" -> task4(path);
+                default -> showHelp();
             }
         } catch (IOException e) {
             LOGGER.error("Error writing to output file: " + e.getMessage());
@@ -78,12 +69,9 @@ public class App {
     }
 
     private static void task1(Path path) throws IOException {
-        Optional<Path> res = FileFinder.findFileWithMaxS(path);
-        if (res.isPresent()) {
-            writeResult(res.get().getFileName().toString());
-        } else {
-            writeResult("No file with letter 's' found.");
-        }
+        writeResult(FileFinder.findFileWithMaxS(path)
+                .map(p -> p.getFileName().toString())
+                .orElse("No file with letter 's' found."));
     }
 
     private static void task2(Path path) throws IOException {
