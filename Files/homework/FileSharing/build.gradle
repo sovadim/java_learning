@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'jacoco'
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+application {
+    mainClass = "com.epam.files.App"
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+run {
+    standardInput = System.in
+}
+
+dependencies {
+    implementation("org.postgresql:postgresql:42.7.5")
+
+    // Logging
+    implementation("org.apache.logging.log4j:log4j-api:2.24.3")
+    implementation("org.apache.logging.log4j:log4j-core:2.24.3")
+
+    // Testing
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.12.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.dbunit:dbunit:3.0.0")
+}
+
+test {
+    useJUnitPlatform()
+
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = false
+        csv.required = false
+    }
+}
