@@ -37,21 +37,35 @@ public class AppTest {
     @Test
     @DisplayName("Shows error if number arg is incorrect")
     public void showsErrorIfNumberArgIsIncorrect() {
-        app("abc");
-        assertEquals("Can't parse argument as a number 'abc'\n", getStdOut());
+        app("abc", "def");
+        assertEquals("Can't parse argument as a number: For input string: \"abc\"\n", getStdOut());
+    }
+
+    @Test
+    @DisplayName("Shows error if threads arg is incorrect")
+    public void showsErrorIfThreadsArgIsIncorrect() {
+        app("1", "def");
+        assertEquals("Can't parse argument as a number: For input string: \"def\"\n", getStdOut());
     }
 
     @Test
     @DisplayName("Shows error if number is negative")
     public void showsErrorIfNumberIsNegative() {
-        app("-1");
+        app("-1", "1");
         assertEquals("Can't find factorial of a negative number: -1\n", getStdOut());
+    }
+
+    @Test
+    @DisplayName("Shows error if number of threads is incorrect")
+    public void showsErrorIfNumberOfThreadsIsIncorrect() {
+        app("1", "-1");
+        assertEquals("Can't use requested number of threads: -1\n", getStdOut());
     }
 
     @Test
     @DisplayName("Returns the result if the args are correct")
     public void returnsResultIfArgsAreCorrect() {
-        app("1");
+        app("1", "1");
         assertEquals("1\n", getStdOut());
     }
 }
